@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tic Tac Toe</title>
+    <link href='style.css' rel='stylesheet'>
+</head>
+
+<body>
+    <h1></h1>
+
+    <article class='board'>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </article>
+
+
+
+
+
+    <script>
+        let tiles = document.querySelectorAll('div');
+
+        let firstRow = [tiles[0], tiles[1], tiles[2]];
+        let secondRow = [tiles[3], tiles[4], tiles[5]];
+        let thirdRow = [tiles[6], tiles[7], tiles[8]];
+
+        let rows = [firstRow, secondRow, thirdRow];
+
+        let firstColumn = [tiles[0], tiles[3], tiles[6]];
+        let secondColumn = [tiles[1], tiles[4], tiles[7]];
+        let thirdColumn = [tiles[2], tiles[5], tiles[8]];
+
+        let columns = [firstColumn, secondColumn, thirdColumn];
+
+        let firstDiagonal = [tiles[0], tiles[4], tiles[8]];
+        let secondDiagonal = [tiles[2], tiles[4], tiles[6]];
+
+        let diagonals = [firstDiagonal, secondDiagonal];
+
+        let board = [rows, columns, diagonals];
+
+        let userChoice = prompt('Would you like to be X or O?')
+
+        if (userChoice !== 'x' && userChoice !== 'o' && userChoice !== 'O' && userChoice !== 'X') {
+            prompt('That is not a valid selection. Please choose X or O');
+        }
+
+        let computerChoice = '';
+        if (userChoice === 'X' || userChoice === 'x') {
+            computerChoice = 'O';
+        } else {
+            computerChoice = 'X';
+        };
+
+        //loops through each tile, adding user choice and checking for user win
+        let move = 0;
+        tiles.forEach(tile => tile.addEventListener('click', function () {
+            move++;
+            tile.textContent = userChoice;
+
+            // delays the calling of random tile by half a second
+            setTimeout(computerMove, 500);
+
+            function userWin(element) {
+                if (element.textContent === userChoice) {
+                    return true;
+                }
+            };
+
+            board.forEach(grid => {
+                grid.forEach(section => {
+                    if (section.every(userWin)) {
+                        tile.textContent = userChoice;
+                        let playAgain = prompt('You win! Would you like to play again?');
+                        if (playAgain === 'Yes') {
+                            resetBoard();
+                        }
+
+                    }
+                });
+            });
+            //check if draw
+            if (move === 5) {
+                alert('Draw!');
+                let playAgain = prompt('You win! Would you like to play again?');
+                if (playAgain === 'Yes') {
+                    resetBoard();
+                }
+            }
+
+        }));
+
+        // adds computer move at random tile, and checks if computer wins
+
+        function computerMove() {
+            let randomNum = Math.floor((Math.random() * 8) + 1);
+            if (tiles[randomNum].textContent !== userChoice && tiles[randomNum].textContent !== computerChoice) {
+                tiles[randomNum].textContent = computerChoice;
+            } else {
+                computerMove();
+            }
+
+            function computerWin(element) {
+                if (element.textContent === computerChoice) {
+                    return true;
+                }
+
+                board.forEach(grid => {
+                    grid.forEach(section => {
+                        if (section.every(computerWin)) {
+                            let playAgain = prompt('You lose, computer wins! Play again?');
+                            if (playAgain === 'Yes') {
+                                resetBoard();
+                            }
+                        }
+                    });
+                });
+            }
+
+        }
+
+        function resetBoard() {
+            location.reload();
+        }
+
+    </script>
+
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</html>
